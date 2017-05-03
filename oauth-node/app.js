@@ -20,26 +20,38 @@ var session = require('express-session')
 var routes = require('./routes/index');
 var connect = require('./routes/connect');
 var callback = require('./routes/callback');
+var reconnect = require('./routes/reconnect');
 var config = require('app/config');
-var app =  express();
+var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ resave: false, saveUninitialized: false, secret: 'smith' }));
+app.use(session({resave: false, saveUninitialized: false, secret: 'smith'}));
 app.use('/', routes);
 app.use('/connect', connect);
 app.use('/callback', callback);
 app.use('/display', routes);
+app.get('/ledgers', (req, res) => {
+
+    if (!req.session.ledgers) {
+        res.send([]);
+    }
+    else {
+        res.send(req.session.ledgers);
+    }
+});
+
+
 app.listen(config.Port, function () {
     console.log('Example app listening at Port:%s', config.Port);
 });

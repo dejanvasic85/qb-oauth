@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+
+        <%= title %>
+
+    </title>
+</head>
+<body>
+
+<div>
+    The base url is: <%= grantUrl %>
+</div>
+
+<div>
+    List of Ledgers:
+
+    <ul id="ledger-list">
+
+    </ul>
+
+    <div>
+        <a href="<%= grantUrl %>">
+            Connect Quickbooks Ledger
+        </a>
+    </div>
+
+</div>
+
+
+<script
+        src="https://code.jquery.com/jquery-1.12.4.js"
+        integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+        crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular.min.js" type="application/javascript"></script>
+
+
+<script>
+
+    $(function(){
+        $.get('/ledgers').then(function(data){
+            console.log('data', data);
+        });
+
+    });
+
+</script>
+</body>
+</html>

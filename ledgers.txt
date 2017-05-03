@@ -1,0 +1,13 @@
+123145822794009 = Mechanic
+123145822793999 = HackDay
+123145822794129 = bakery
+
+
+
+secrets:
+
+app (consumer key): ...
+
+accountant: eLvxbpB5FBjfbcq9ntpWsHbecAcqSIM6WSzjnQsq
+
+realm (company key): ZSV68fVGVVPtLSxC7yPjrcpL75sBkXXUVr7KxAqr

@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
     var getrequestToken = {
         url: config.REQUEST_TOKEN_URL,
         oauth: {
-            callback: 'http://localhost:' + 3001 + '/callback/',
+            callback: 'http://localhost:' + config.Port + '/callback/',
             consumer_key: config.consumerKey,
             consumer_secret: config.consumerSecret
         }
