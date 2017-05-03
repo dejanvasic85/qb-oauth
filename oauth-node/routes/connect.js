@@ -20,6 +20,7 @@ router.get('/', function (req, res) {
     request.post(getrequestToken, function (e, r, data) {
         var requestToken = qs.parse(data)
         sessionData.oauth_token_secret = requestToken.oauth_token_secret
+        sessionData.oauth_token = requestToken.oauth_token;
         console.log(requestToken)
         res.redirect(config.AuthorizeUrl + requestToken.oauth_token)
     })

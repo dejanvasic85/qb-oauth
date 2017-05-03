@@ -1,2 +1,4 @@
 oauth-node/bin/*
 oauth-node/obj/*
+node_modules
+.idea/

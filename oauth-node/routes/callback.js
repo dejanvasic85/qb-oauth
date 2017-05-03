@@ -1,17 +1,20 @@
 ﻿var express = require('express');
 var router = express.Router();
-var config = require('app/config');
-var 
+    config = require('app/config'),
     request = require('request'),
-    qs = require('querystring')
+    qs = require('querystring'),
+    LedgerService = require('../services/ledger-service');
+
 /* GET the access token. */
 router.get('/', function (req, res) {
     var sessionData = req.session;
     sessionData.AccessToken = '';
     sessionData.AccessTokenSecret = '';
     sessionData.Port = config.Port;
+    var realmId = req.query.realmId;
+
     var getAccessToken = {
-        url: config.ACCESS_TOKEN_URL    ,
+        url: config.ACCESS_TOKEN_URL,
         oauth: {
             consumer_key: config.consumerKey,
             consumer_secret: config.consumerSecret,
@@ -27,7 +30,7 @@ router.get('/', function (req, res) {
         var accessTokenLocal = qs.parse(data);
 
         // Store ledgers in the session
-        if(!sessionData.ledgers){
+        if (!sessionData.ledgers) {
             sessionData.ledgers = [];
         }
 
@@ -36,9 +39,18 @@ router.get('/', function (req, res) {
             ledgerSecret: accessTokenLocal.oauth_token_secret
         };
 
-        sessionData.ledgers.push(ledgerDetails);
+        const ledgerService = new LedgerService(realmId,
+            accessTokenLocal.oauth_token,
+            accessTokenLocal.oauth_token_secret);
 
-        res.redirect('/');
+        ledgerService.getCompanyFiles().then((ledger) => {
+
+            ledgerDetails.businessName = ledger.businessName;
+
+            sessionData.ledgers.push(ledgerDetails);
+
+            res.redirect('/');
+        });
     })
 });
 module.exports = router;
