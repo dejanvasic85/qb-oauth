@@ -35,14 +35,20 @@
         integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
         crossorigin="anonymous"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular.min.js" type="application/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular.min.js"
+        type="application/javascript"></script>
 
 
 <script>
 
-    $(function(){
-        $.get('/ledgers').then(function(data){
-            console.log('data', data);
+    $(function () {
+        $.get('/ledgers').then(function (data) {
+
+            if (data && data.length > 0) {
+                for (let i = 0; i < data.length; i++) {
+                    $('#ledger-list').append('<li>' + data[i].businessName + '</li>')
+                }
+            }
         });
 
     });
