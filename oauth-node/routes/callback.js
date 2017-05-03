@@ -41,7 +41,7 @@ router.get('/', function (req, res) {
             accessTokenLocal.oauth_token,
             accessTokenLocal.oauth_token_secret);
 
-        ledgerService.getCompanyFiles().then((ledger) => {
+        ledgerService.getCompanyInfo().then((ledger) => {
 
             ledgerDetails.id = ledger.id;
             ledgerDetails.businessName = ledger.businessName;

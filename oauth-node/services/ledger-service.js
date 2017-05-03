@@ -4,6 +4,9 @@ const Promise = require('bluebird');
 
 module.exports = function (realmId, oauthToken, oauthTokenSecret) {
 
+    var me = this;
+    me.id = realmId;
+
     const qbo = new QuickBooks(config.consumerKey,
         config.consumerSecret,
         oauthToken,
@@ -13,7 +16,7 @@ module.exports = function (realmId, oauthToken, oauthTokenSecret) {
         false); // turn debugging on
 
     return {
-        getCompanyFiles: () => {
+        getCompanyInfo: () => {
             return new Promise((resolve, reject) => {
                 qbo.findCompanyInfos({}, function (e, data) {
                     if(e){
@@ -25,9 +28,9 @@ module.exports = function (realmId, oauthToken, oauthTokenSecret) {
                         const companyInfo = data.QueryResponse.CompanyInfo[0];
 
                         console.log('companyInfo Returned', companyInfo);
-                        
+
                         resolve({
-                            id: companyInfo.CompanyName,
+                            id: me.id,
                             businessName: companyInfo.CompanyName,
                             countryCode: companyInfo.Country,
                             email: companyInfo.Email.Address
