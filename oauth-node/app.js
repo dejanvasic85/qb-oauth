@@ -20,8 +20,8 @@ var session = require('express-session')
 var routes = require('./routes/index');
 var connect = require('./routes/connect');
 var callback = require('./routes/callback');
-var reconnect = require('./routes/reconnect');
 var config = require('app/config');
+var Repository = require('./services/ledger-session-repository');
 var app = express();
 
 // view engine setup
@@ -42,13 +42,10 @@ app.use('/connect', connect);
 app.use('/callback', callback);
 app.use('/display', routes);
 app.get('/ledgers', (req, res) => {
-
-    if (!req.session.ledgers) {
-        res.send([]);
-    }
-    else {
-        res.send(req.session.ledgers);
-    }
+    var repository = new Repository(req.session);
+    let ledgers = repository.getLedgers();
+    console.log('ledgers', ledgers);
+    res.send(ledgers);
 });
 
 

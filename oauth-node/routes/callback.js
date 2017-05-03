@@ -1,9 +1,10 @@
 ﻿var express = require('express');
 var router = express.Router();
-    config = require('app/config'),
-    request = require('request'),
-    qs = require('querystring'),
-    LedgerService = require('../services/ledger-service');
+var config = require('app/config');
+var request = require('request');
+var qs = require('querystring');
+var LedgerService = require('../services/ledger-service');
+var LedgerSessionRepository = require('../services/ledger-session-repository');
 
 /* GET the access token. */
 router.get('/', function (req, res) {
@@ -28,11 +29,8 @@ router.get('/', function (req, res) {
     request.post(getAccessToken, function (e, r, data) {
 
         var accessTokenLocal = qs.parse(data);
+        var repository = new LedgerSessionRepository(sessionData);
 
-        // Store ledgers in the session
-        if (!sessionData.ledgers) {
-            sessionData.ledgers = [];
-        }
 
         let ledgerDetails = {
             ledgerToken: accessTokenLocal.oauth_token,
@@ -45,9 +43,12 @@ router.get('/', function (req, res) {
 
         ledgerService.getCompanyFiles().then((ledger) => {
 
+            ledgerDetails.id = ledger.id;
             ledgerDetails.businessName = ledger.businessName;
+            ledgerDetails.countryCode = ledger.countryCode;
+            ledgerDetails.email = ledger.email;
 
-            sessionData.ledgers.push(ledgerDetails);
+            repository.saveLedgerDetails(ledgerDetails);
 
             res.redirect('/');
         });

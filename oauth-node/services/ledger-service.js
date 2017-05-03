@@ -23,8 +23,14 @@ module.exports = function (realmId, oauthToken, oauthTokenSecret) {
                     if(data.QueryResponse && data.QueryResponse.CompanyInfo && data.QueryResponse.CompanyInfo.length > 0){
 
                         const companyInfo = data.QueryResponse.CompanyInfo[0];
+
+                        console.log('companyInfo Returned', companyInfo);
+                        
                         resolve({
-                            businessName: companyInfo.CompanyName
+                            id: companyInfo.CompanyName,
+                            businessName: companyInfo.CompanyName,
+                            countryCode: companyInfo.Country,
+                            email: companyInfo.Email.Address
                         });
 
                     }
