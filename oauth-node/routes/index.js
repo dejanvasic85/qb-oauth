@@ -6,14 +6,18 @@ var router = express.Router();
 */
 router.get('/', function (req, res) {
    
-    var grantUrl = 'http://localhost:' + config.Port + '/connect';
-    res.render('index', { title: 'Welcome to intuit oauth node sample demo',grantUrl: grantUrl });
+    var grantUrl = 'http://localhost:' + config.Port + '/connect?closeWindow=true';
+    res.render('index', { title: 'Welcome to intuit oauth node sample demo', grantUrl: grantUrl });
 });
+
+
 /*
 * Display the access token and access secret.
 */
-router.get('/display', function (req, res) {
+router.get('/close', function (req, res) {
     
-    res.render('display', { Port:config.Port ,AccessToken: req.session.AccessToken, AccessTokenSecret: req.session.AccessTokenSecret });
+    res.render('close', { Port:config.Port ,AccessToken: req.session.AccessToken, AccessTokenSecret: req.session.AccessTokenSecret });
 });
+
+
 module.exports = router;

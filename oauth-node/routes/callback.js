@@ -51,7 +51,7 @@ router.get('/', function (req, res) {
 
             repository.saveLedgerDetails(ledgerDetails)
                 .then(() => {
-                    res.redirect('/');
+                    res.redirect('/close');
                 })
                 .catch(err => {
                     console.error(err);

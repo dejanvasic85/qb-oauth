@@ -20,6 +20,7 @@
             color: blueviolet;
             text-decoration: none;
             text-transform: capitalize;
+            cursor: pointer;
         }
 
         .top-bar {
@@ -32,21 +33,6 @@
             height: 5px;
         }
 
-        #ledger-list {
-            list-style-type: none;
-            margin: 0;
-        }
-
-        #ledger-list li {
-            margin: 0;
-            padding: 12px 16px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        #ledger-list li.xero {
-            font-size: .8em;
-        }
-
         .connect-ledger {
             border-radius: 4px;
             border: 2px solid blueviolet;
@@ -57,11 +43,12 @@
         .container {
             padding: 15px 30px;
         }
+
     </style>
     <meta charset="UTF-8">
     <title>
 
-        <%= title %>
+        Done. Please wait...
 
     </title>
 </head>
@@ -70,60 +57,19 @@
 <div class="top-bar"></div>
 
 <div>
-
     <header class="container">
-        <h1>Partner Dashboard</h1>
-        <a href="<%= grantUrl %>" class="connect-ledger">
-            Connect Quickbooks Ledger
-        </a>
+        <div>
+            Done. Returning to Partner Dashboard... please wait.
+        </div>
     </header>
 
-    <ul id="ledger-list" class="container">
+    <script>
+        setTimeout(function () {
 
-    </ul>
+            window.opener.justClose();
 
-    <!--<button id="open">-->
-        <!--Open-->
-    <!--</button>-->
-
+        }, 2000);
+    </script>
 </div>
-
-
-<script
-        src="https://code.jquery.com/jquery-1.12.4.js"
-        integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
-        crossorigin="anonymous"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular.min.js"
-        type="application/javascript"></script>
-
-
-<script>
-
-    var qbWindow = null;
-
-    $(function () {
-
-        $.get('/ledgers').then(function (data) {
-
-            if (data && data.length > 0) {
-                for (let i = 0; i < data.length; i++) {
-                    $('#ledger-list').append('<li class="xero"><a href="https://sg.qbo.intuit.com/app" target="_blank">' + data[i].businessName + '</a></li>')
-                }
-            }
-        });
-
-        $('#open').on('click', function () {
-            var url = 'http://localhost:3001/close';
-            qbWindow = window.open(url, '_blank', 'width=800,height=600');
-        });
-
-    });
-
-    window.justClose = function() {
-        qbWindow.close();
-    }
-
-</script>
 </body>
 </html>
