@@ -3,8 +3,9 @@ var router = express.Router();
 var config = require('app/config');
 var request = require('request');
 var qs = require('querystring');
+var mongoose = require('mongoose');
 var LedgerService = require('../services/ledger-service');
-var LedgerSessionRepository = require('../services/ledger-session-repository');
+var Repository = require('../services/ledger-repository');
 
 /* GET the access token. */
 router.get('/', function (req, res) {
@@ -29,7 +30,7 @@ router.get('/', function (req, res) {
     request.post(getAccessToken, function (e, r, data) {
 
         var accessTokenLocal = qs.parse(data);
-        var repository = new LedgerSessionRepository(sessionData);
+        var repository = new Repository(mongoose);
 
 
         let ledgerDetails = {
@@ -48,9 +49,14 @@ router.get('/', function (req, res) {
             ledgerDetails.countryCode = ledger.countryCode;
             ledgerDetails.email = ledger.email;
 
-            repository.saveLedgerDetails(ledgerDetails);
-
-            res.redirect('/');
+            repository.saveLedgerDetails(ledgerDetails)
+                .then(() => {
+                    res.redirect('/');
+                })
+                .catch(err => {
+                    console.error(err);
+                    throw err;
+                });
         });
     })
 });

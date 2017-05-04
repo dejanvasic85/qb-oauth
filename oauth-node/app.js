@@ -23,7 +23,7 @@ var connect = require('./routes/connect');
 var callback = require('./routes/callback');
 var config = require('app/config');
 var Promise = require('bluebird');
-var Repository = require('./services/ledger-session-repository');
+var Repository = require('./services/ledger-repository');
 var app = express();
 var cors = require('cors');
 
@@ -46,10 +46,13 @@ app.use('/connect', connect);
 app.use('/callback', callback);
 app.use('/display', routes);
 app.get('/ledgers', (req, res) => {
-    var repository = new Repository(req.session);
-    let ledgers = repository.getLedgers();
-    console.log('ledgers', ledgers);
-    res.send(ledgers);
+    var repository = new Repository(mongoose);
+
+    repository.getLedgers().then((ledgers) => {
+        console.log('ledgers', ledgers);
+        res.send(ledgers);
+    });
+
 });
 
 
