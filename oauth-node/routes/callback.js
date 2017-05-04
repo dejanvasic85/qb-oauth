@@ -51,7 +51,12 @@ router.get('/', function (req, res) {
 
             repository.saveLedgerDetails(ledgerDetails)
                 .then(() => {
-                    res.redirect('/close');
+                    if (sessionData.goHome) {
+                        res.redirect('/');
+                    }
+                    else {
+                        res.redirect('/close');
+                    }
                 })
                 .catch(err => {
                     console.error(err);

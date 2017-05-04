@@ -6,7 +6,7 @@ var router = express.Router();
 */
 router.get('/', function (req, res) {
    
-    var grantUrl = 'http://localhost:' + config.Port + '/connect?closeWindow=true';
+    var grantUrl = 'http://localhost:' + config.Port + '/connect?goHome=true';
     res.render('index', { title: 'Welcome to intuit oauth node sample demo', grantUrl: grantUrl });
 });
 
