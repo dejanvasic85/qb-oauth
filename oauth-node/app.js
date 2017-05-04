@@ -23,11 +23,13 @@ var callback = require('./routes/callback');
 var config = require('app/config');
 var Repository = require('./services/ledger-session-repository');
 var app = express();
+var cors = require('cors');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(cors());
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
