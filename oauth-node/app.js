@@ -16,11 +16,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = require('express-session')
+var session = require('express-session');
+var mongoose = require('mongoose');
 var routes = require('./routes/index');
 var connect = require('./routes/connect');
 var callback = require('./routes/callback');
 var config = require('app/config');
+var Promise = require('bluebird');
 var Repository = require('./services/ledger-session-repository');
 var app = express();
 var cors = require('cors');
@@ -51,9 +53,6 @@ app.get('/ledgers', (req, res) => {
 });
 
 
-app.listen(config.Port, function () {
-    console.log('Example app listening at Port:%s', config.Port);
-});
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
@@ -84,4 +83,16 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
+
+mongoose.Promise = Promise;
+console.log('Starting mongo connection...please wait');
+
+mongoose.connect('mongodb://localhost:27017/quickbooks', function () {
+    console.log('Mongo DB connection opened. Starting application...');
+    app.listen(config.Port, function () {
+        console.log('Example app listening at Port:%s', config.Port);
+    });
+});
+
+
 module.exports = app;
