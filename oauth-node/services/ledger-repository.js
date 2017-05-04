@@ -1,4 +1,5 @@
 var LedgerSchema = require('./ledger-schema');
+var Promise = require('bluebird');
 
 module.exports = class LedgerRepository {
 
@@ -13,9 +14,29 @@ module.exports = class LedgerRepository {
 
     saveLedgerDetails(ledgerDetails) {
 
-        var ledger = new this.Ledger(ledgerDetails);
+        return new Promise((resolve, reject) => {
 
-        return ledger.save();
+            this.Ledger.findOne({id: ledgerDetails.id}, (err, data) => {
+
+                if (err) {
+                    reject(err);
+                }
+
+                if (data) {
+                    console.log('Found ledger. Overriding the details.');
+                    Object.assign(data, ledgerDetails);
+                }
+                else {
+
+                    data = new this.Ledger(ledgerDetails)
+                }
+
+                return data.save().then(() => {
+                    resolve(data);
+                });
+            });
+
+        });
     };
 
     getLedgers() {
